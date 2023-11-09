@@ -1,3 +1,4 @@
 data/*
 .idea/
 output
+allocs.json

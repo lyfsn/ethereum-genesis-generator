@@ -26,6 +26,7 @@ gen_el_config(){
         tmp_dir=$(mktemp -d -t ci-XXXXXXXXXX)
         mkdir -p /data/custom_config_data
         envsubst < /config/el/genesis-config.yaml > $tmp_dir/genesis-config.yaml
+        cp /config/el/allocs.json $tmp_dir/allocs.json
         python3 /apps/el-gen/genesis_geth.py $tmp_dir/genesis-config.yaml      > /data/custom_config_data/genesis.json
         python3 /apps/el-gen/genesis_chainspec.py $tmp_dir/genesis-config.yaml > /data/custom_config_data/chainspec.json
         python3 /apps/el-gen/genesis_besu.py $tmp_dir/genesis-config.yaml > /data/custom_config_data/besu.json
