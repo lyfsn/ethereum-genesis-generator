@@ -2,3 +2,4 @@ data/*
 .idea/
 output
 allocs.json
+el-cl-genesis-data
