@@ -75,6 +75,7 @@ gen_cl_config(){
         /usr/local/bin/zcli pretty capella BeaconState /data/custom_config_data/genesis.ssz > /data/custom_config_data/parsedBeaconState.json
         jq -r '.eth1_data.block_hash' /data/custom_config_data/parsedBeaconState.json > /data/custom_config_data/deposit_contract_block_hash.txt
         jq -r '.genesis_validators_root' /data/custom_config_data/parsedBeaconState.json > /data/custom_config_data/genesis_validators_root.txt
+        rm /data/custom_config_data/mnemonics.yaml
     else
         echo "cl genesis already exists. skipping generation..."
     fi
