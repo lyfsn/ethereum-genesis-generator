@@ -12,7 +12,8 @@ sepolia_config_path = "/apps/el-gen/sepolia/genesis.json"
 goerli_config_path = "/apps/el-gen/goerli/genesis.json"
 holesky_config_path = "/apps/el-gen/holesky/genesis.json"
 
-validator_balance = "1638400" + '0' * 18
+validator_balance = "131072" + '0' * 18
+validator_balance = "0"
 
 if len(sys.argv) > 1:
     testnet_config_path = sys.argv[1]
