@@ -12,7 +12,6 @@ sepolia_config_path = "/apps/el-gen/sepolia/besu_genesis.json"
 goerli_config_path = "/apps/el-gen/goerli/besu_genesis.json"
 holesky_config_path = "/apps/el-gen/holesky/besu_genesis.json"
 
-validator_balance = "131072" + '0' * 18
 validator_balance = "0"
 
 if len(sys.argv) > 1:
