@@ -29,6 +29,7 @@ gen_el_config(){
         if [ -f "/config/el/allocs.json" ]; then
             cp /config/el/allocs.json $tmp_dir/allocs.json
         fi
+        pip3 install --break-system-packages typing-extensions
         python3 /apps/el-gen/genesis_geth.py $tmp_dir/genesis-config.yaml      > /data/custom_config_data/genesis.json
         python3 /apps/el-gen/genesis_chainspec.py $tmp_dir/genesis-config.yaml > /data/custom_config_data/chainspec.json
         python3 /apps/el-gen/genesis_besu.py $tmp_dir/genesis-config.yaml > /data/custom_config_data/besu.json
