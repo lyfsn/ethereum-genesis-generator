@@ -143,6 +143,15 @@ else:
         if 'secretKey' in account:
             alloc_entry['secretKey'] = account['secretKey']
 
+        # If allocs.json exists, add those allocs to the genesis file
+        allocs = {}
+        try:
+            with open(allocs_path) as allocs_file:
+                allocs = json.load(allocs_file)
+        except FileNotFoundError:
+            allocs = {}
+            print("No allocs.json file found, skipping...", file=sys.stderr)
+
         # Add alloc entry to output's alloc field
         out["alloc"][addr] = alloc_entry
 
