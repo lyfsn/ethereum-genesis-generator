@@ -26,6 +26,7 @@ gen_el_config(){
         envsubst < /config/el/genesis-config.yaml > $tmp_dir/genesis-config.yaml
         if [ -f "/config/el/allocs.json" ]; then
             cp /config/el/allocs.json $tmp_dir/allocs.json
+            echo "allocs.json found. using it..."
         fi
         pip3 install --break-system-packages typing-extensions
         python3 /apps/el-gen/genesis_geth.py $tmp_dir/genesis-config.yaml      > /data/custom_config_data/genesis.json

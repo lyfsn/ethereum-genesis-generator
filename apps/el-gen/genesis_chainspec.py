@@ -2,6 +2,7 @@ from web3.auto import w3
 import json
 import ruamel.yaml as yaml
 import sys
+import os
 
 w3.eth.account.enable_unaudited_hdwallet_features()
 
@@ -10,9 +11,12 @@ mainnet_config_path = "/apps/el-gen/mainnet/chainspec.json"
 sepolia_config_path = "/apps/el-gen/sepolia/chainspec.json"
 goerli_config_path = "/apps/el-gen/goerli/chainspec.json"
 holesky_config_path = "/apps/el-gen/holesky/chainspec.json"
+allocs_path = "allocs.json"
 
 if len(sys.argv) > 1:
     testnet_config_path = sys.argv[1]
+    testnet_config_dir = os.path.dirname(testnet_config_path)
+    allocs_path = os.path.join(testnet_config_dir, "allocs.json")
 
 with open(testnet_config_path) as stream:
     data = yaml.safe_load(stream)
@@ -181,17 +185,18 @@ else:
         if 'secretKey' in account:
             alloc_entry['secretKey'] = account['secretKey']
 
-        # If allocs.json exists, add those allocs to the genesis file
-        allocs = {}
-        try:
-            with open(allocs_path) as allocs_file:
-                allocs = json.load(allocs_file)
-        except FileNotFoundError:
-            allocs = {}
-            print("No allocs.json file found, skipping...", file=sys.stderr)
-
         # Add alloc entry to output's alloc field
         out["accounts"][addr] = alloc_entry
+
+    # If allocs.json exists, add those allocs to the genesis file
+    allocs = {}
+    try:
+        with open(allocs_path) as allocs_file:
+            allocs = json.load(allocs_file)
+    except FileNotFoundError:
+        allocs = {}
+        print("No allocs.json file found, skipping...", file=sys.stderr)
+    out["accounts"].update(allocs)
 
 out['params']['eip4844TransitionTimestamp']= hex(int(data['genesis_timestamp']) + int(data['genesis_delay']) + (int(data['deneb_fork_epoch']) * 32 * int(data['slot_duration_in_seconds'])))
 out['params']['eip4788TransitionTimestamp']= hex(int(data['genesis_timestamp']) + int(data['genesis_delay']) + (int(data['deneb_fork_epoch']) * 32 * int(data['slot_duration_in_seconds'])))
