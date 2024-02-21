@@ -24,6 +24,11 @@ gen_el_config(){
         tmp_dir=$(mktemp -d -t ci-XXXXXXXXXX)
         mkdir -p /data/custom_config_data
         envsubst < /config/el/genesis-config.yaml > $tmp_dir/genesis-config.yaml
+        if [ -f "/config/el/allocs.json" ]; then
+            cp /config/el/allocs.json $tmp_dir/allocs.json
+            echo "allocs.json found. using it..."
+        fi
+        pip3 install --break-system-packages typing-extensions
         python3 /apps/el-gen/genesis_geth.py $tmp_dir/genesis-config.yaml      > /data/custom_config_data/genesis.json
         python3 /apps/el-gen/genesis_chainspec.py $tmp_dir/genesis-config.yaml > /data/custom_config_data/chainspec.json
         python3 /apps/el-gen/genesis_besu.py $tmp_dir/genesis-config.yaml > /data/custom_config_data/besu.json
@@ -41,7 +46,6 @@ gen_cl_config(){
         # Replace environment vars in files
         envsubst < /config/cl/config.yaml > /data/custom_config_data/config.yaml
         envsubst < /config/cl/mnemonics.yaml > $tmp_dir/mnemonics.yaml
-        cp $tmp_dir/mnemonics.yaml /data/custom_config_data/mnemonics.yaml
         # Create deposit_contract.txt and deploy_block.txt
         grep DEPOSIT_CONTRACT_ADDRESS /data/custom_config_data/config.yaml | cut -d " " -f2 > /data/custom_config_data/deposit_contract.txt
         echo $CL_EXEC_BLOCK > /data/custom_config_data/deploy_block.txt

@@ -2,6 +2,7 @@ from web3.auto import w3
 import json
 import ruamel.yaml as yaml
 import sys
+import os
 
 w3.eth.account.enable_unaudited_hdwallet_features()
 
@@ -10,9 +11,12 @@ mainnet_config_path = "/apps/el-gen/mainnet/genesis.json"
 sepolia_config_path = "/apps/el-gen/sepolia/genesis.json"
 goerli_config_path = "/apps/el-gen/goerli/genesis.json"
 holesky_config_path = "/apps/el-gen/holesky/genesis.json"
+allocs_path = "allocs.json"
 
 if len(sys.argv) > 1:
     testnet_config_path = sys.argv[1]
+    testnet_config_dir = os.path.dirname(testnet_config_path)
+    allocs_path = os.path.join(testnet_config_dir, "allocs.json")
 
 with open(testnet_config_path) as stream:
     data = yaml.safe_load(stream)
@@ -151,6 +155,15 @@ else:
         # Add alloc entry to output's alloc field
         out["alloc"][addr] = alloc_entry
 
+    # If allocs.json exists, add those allocs to the genesis file
+    allocs = {}
+    try:
+        with open(allocs_path) as allocs_file:
+            allocs = json.load(allocs_file)
+    except FileNotFoundError:
+        allocs = {}
+        print("No allocs.json file found, skipping...", file=sys.stderr)
+    out["alloc"].update(allocs)
 
 out['config']['cancunTime'] = int(data['genesis_timestamp']) + int(data['genesis_delay']) + (int(data['deneb_fork_epoch']) * 32 * int(data['slot_duration_in_seconds']))
 print(json.dumps(out, indent='  '))
