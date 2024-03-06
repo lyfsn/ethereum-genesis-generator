@@ -1,5 +1,8 @@
 {
-  "0x1230000000000000000000000000000000000000": {
-    "balance": "0x80cc63fe90077c4f5600"
+  "0x6D39C4E60dEf1DfC6d09A8FdB5D075e85F0e5F8d": {
+    "balance": "0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"
+  },
+  "0x8cD1eb78bEacaa1190D1AAEb5bAD32bcFc9E24a7": {
+    "balance": "0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"
   }
 }
